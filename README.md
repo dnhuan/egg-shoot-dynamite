@@ -1,1 +1,1 @@
-"# egg-shoot-dynamite" 
+# egg-shoot-dynamite
