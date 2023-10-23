@@ -17,6 +17,8 @@ isActivated = False
 width = 680
 height = 1080
 
+
+
 if __name__ == "__main__":
     root = tk.Tk()
     root.geometry(f'{width}x{height}+282+150')
@@ -40,6 +42,9 @@ if __name__ == "__main__":
     controls.geometry("300x200+1400+400")
     controls.title("Controls")
     controls.resizable(False, False)
+    controls.wm_attributes("-topmost", 1)
+    controls.attributes('-topmost', 1)
+    
 
     # create a label for isActivated
     isActivated_label = tk.Label(controls, text=f"isActivated: {isActivated}", font=("Arial", 12))
@@ -58,7 +63,7 @@ if __name__ == "__main__":
         root.destroy()
         controls.destroy()
 
-    keyboard.add_hotkey('esc', quit)
+    keyboard.add_hotkey('tab', quit)
 
     root.mainloop()
 
