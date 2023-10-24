@@ -1,14 +1,12 @@
 import time
 import tkinter as tk
-from win32gui import SetWindowLong, GetWindowLong, SetLayeredWindowAttributes
-from win32con import WS_EX_LAYERED, WS_EX_TRANSPARENT, GWL_EXSTYLE
 import keyboard
 from PIL import ImageGrab, ImageTk
 from utils import process_image
 from directKeys import click
 
-
-isActivated = False
+isDetecting = False
+isActivated = True
 
 width = 700
 height = 870
@@ -18,8 +16,11 @@ lastClick = time.time()
 
 # delete and recreate tmp folder
 import shutil
-shutil.rmtree("tmp")
 import os
+
+if os.path.exists("tmp"):
+    shutil.rmtree("tmp")
+
 os.mkdir("tmp")
 
 
@@ -44,9 +45,9 @@ def update_screenshot_label():
         processed_image, target = screenshot, None
     screenshot_image = ImageTk.PhotoImage(processed_image)
     screenshot_label.config(image=screenshot_image)
-    screenshot_label.image = screenshot_image  # keep a reference to the image
-    root.after(100, update_screenshot_label) 
-    if target is not None:
+    screenshot_label.image = screenshot_image
+    root.after(1, update_screenshot_label) 
+    if isDetecting and target is not None:
         process_target(target)
 
     
@@ -67,8 +68,13 @@ if __name__ == "__main__":
         global isActivated
         isActivated = not isActivated
 
-    keyboard.add_hotkey('tab', toggle_isActivated)
+    def toggle_isDetecting():
+        global isDetecting
+        if isActivated:
+         isDetecting = not isDetecting
 
+    keyboard.add_hotkey('tab', toggle_isActivated)
+    keyboard.add_hotkey('space', toggle_isDetecting)
 
     keyboard.add_hotkey('esc', lambda: root.destroy())
 
